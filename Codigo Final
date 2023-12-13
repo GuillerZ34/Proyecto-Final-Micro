@@ -1,0 +1,104 @@
+int LuzDelantera1 = 6;
+int LuzDelantera2= 5;
+int LuzTrasera = 4;
+
+// Definicion Pines Motores
+int motor_derA = 8;
+int motor_derB = 9;
+int motor_izqB = 10;
+int motor_izqA = 11;
+
+// Variable comando App
+String accion = "";
+
+void setup() {
+  Serial.begin(9600);
+ 
+  //Pin Mode Luces
+  pinMode( LuzDelantera1, OUTPUT);
+  pinMode( LuzDelantera2, OUTPUT);
+  pinMode( LuzTrasera, OUTPUT);
+
+  // Pin Mode Motores
+  pinMode(motor_derA, OUTPUT);
+  pinMode(motor_derB, OUTPUT);
+  pinMode(motor_izqB, OUTPUT);
+  pinMode(motor_izqA, OUTPUT);
+}
+
+void loop() {
+  while (Serial.available() > 0) {
+    accion = Serial.readString();
+  }
+
+  if (accion != "") {
+    char comando = accion[0];
+   
+    if (comando == 'S') {
+      Stop();
+    }else
+    if (comando == 'F') {
+      Mover_Adelante();
+    }else
+    if (comando == 'B') {
+      Mover_Atras();
+    }else
+    if (comando == 'D') {
+      Mover_Der();
+    }else
+    if (comando == 'I') {
+      Mover_Izq();
+    }else
+    if(accion=="W"){
+      digitalWrite(LuzDelantera1, HIGH);
+      digitalWrite(LuzDelantera2, HIGH);      
+    }else
+
+    if(accion=="w"){
+      digitalWrite(LuzDelantera1, LOW);
+      digitalWrite(LuzDelantera2, LOW);      
+    }else
+   
+    accion = ""; // Limpiar la variable de comando después de procesarlo
+  }
+}
+
+void Stop() {
+  digitalWrite(motor_derA, LOW);
+  digitalWrite(motor_derB, LOW);
+  digitalWrite(motor_izqB, LOW);
+  digitalWrite(motor_izqA, LOW);
+  digitalWrite ( LuzTrasera, LOW);
+}
+
+void Mover_Adelante() {
+  digitalWrite(motor_derA, HIGH);
+  digitalWrite(motor_derB, LOW);
+  digitalWrite(motor_izqB, LOW);
+  digitalWrite(motor_izqA, HIGH);
+  digitalWrite ( LuzTrasera, LOW);
+}
+
+void Mover_Der() {
+  digitalWrite(motor_derA, HIGH);
+  digitalWrite(motor_derB, LOW);
+  digitalWrite(motor_izqB, LOW);
+  digitalWrite(motor_izqA, LOW);
+  digitalWrite ( LuzTrasera, LOW);
+}
+
+void Mover_Izq() {
+  digitalWrite(motor_derA, LOW);
+  digitalWrite(motor_derB, LOW);
+  digitalWrite(motor_izqB, LOW);
+  digitalWrite(motor_izqA, HIGH);
+  digitalWrite ( LuzTrasera, LOW);
+}
+
+void Mover_Atras() {
+  digitalWrite(motor_derA, LOW);
+  digitalWrite(motor_derB, HIGH);
+  digitalWrite(motor_izqB, HIGH);
+  digitalWrite(motor_izqA, LOW);
+  digitalWrite ( LuzTrasera, HIGH);
+}
